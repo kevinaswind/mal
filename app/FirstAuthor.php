@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Webpatser\Uuid\Uuid;
 
-class Paper extends Model
+class FirstAuthor extends Model
 {
     use SoftDeletes;
 
@@ -31,15 +31,5 @@ class Paper extends Model
         return 'uuid';
     }
 
-    protected $fillable = ['title', 'topic', 'body'];
-
-    public function firstAuthor()
-    {
-        return $this->hasOne(FirstAuthor::class);
-    }
-
-    public function authors()
-    {
-        return $this->hasMany(Author::class);
-    }
+    protected $fillable = ['paper_id', 'uuid', 'name', 'institution', 'email'];
 }

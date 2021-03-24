@@ -31,8 +31,22 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function()
 
     Route::resource('papers', 'PaperController');
 
-    Route::get('/delegate-papers', function (){
-        $papers = auth('delegate')->user()->papers;
-        return view('papers.delegate-papers', compact('papers'));
-    })->name('delegate-papers');
+    Route::group(['middleware' => ['checkChannel','delegate.auth:delegate']], function()
+    {
+        Route::get('/delegate-papers', function (){
+            $papers = auth('delegate')->user()->papers;
+            return view('papers.delegate-papers', compact('papers'));
+        })->name('delegate-papers');
+
+        Route::get('/delegate-submit', function (){
+            return view('papers.delegate-submit');
+        })->name('delegate-submit');
+
+        Route::get('/delegate-papers/{paperId}', function (){
+//            $paper = \App\Paper::find(request()->paperId);
+            $paperId = request()->paperId;
+            return view('papers.delegate-submit', compact('paperId'));
+        })->name('delegate-paper');
+    });
+
 });

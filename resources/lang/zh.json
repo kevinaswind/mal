@@ -221,5 +221,12 @@
     "Title": "题目",
     "Author": "作者",
     "Date of submission": "提交日期",
-    "No abstracts submitted": "您尚未提交摘要"
+    "No abstracts submitted": "您尚未提交摘要",
+    "Submit new abstract": "提交新摘要",
+    "Topic": "所属议题",
+    "Body": "摘要正文",
+    "Next": "下一步",
+    "Abstract Detail": "摘要信息",
+    "First Author": "第一作者",
+    "All Authors": "联合作者"
 }

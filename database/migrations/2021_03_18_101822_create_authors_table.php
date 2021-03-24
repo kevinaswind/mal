@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePapersTable extends Migration
+class CreateAuthorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,16 @@ class CreatePapersTable extends Migration
      */
     public function up()
     {
-        Schema::create('papers', function (Blueprint $table) {
+        Schema::create('authors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('delegate_id');
+            $table->unsignedBigInteger('paper_id');
             $table->uuid('uuid');
-            $table->string('title');
-            $table->string('topic');
-            $table->text('body');
+            $table->unsignedTinyInteger('seq');
+            $table->string('name');
+            $table->string('affiliation_no');
+            $table->boolean('is_presenter')->default(false);
             $table->timestamps();
             $table->softDeletes();
-
-//            $table->foreignId('delegate_id')
-//                ->constrained()
-//                ->onDelete('cascade');
         });
     }
 
@@ -36,6 +33,6 @@ class CreatePapersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('papers');
+        Schema::dropIfExists('authors');
     }
 }
