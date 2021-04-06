@@ -14,7 +14,7 @@ class AddChannelToDelegatesTable extends Migration
     public function up()
     {
         Schema::table('delegates', function (Blueprint $table) {
-            $table->enum('channel', ['international', 'domestic'])->after('email');
+            $table->enum('channel', ['en', 'cn'])->after('email');
         });
     }
 

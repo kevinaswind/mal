@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Delegate\Auth;
 
 use App\Delegate;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RegisterController extends Controller
 {
@@ -63,10 +65,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $channel = LaravelLocalization::getCurrentLocale();
+//        dump($channel);
         return Delegate::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'channel' => $channel,
         ]);
     }
 

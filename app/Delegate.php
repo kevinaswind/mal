@@ -39,7 +39,7 @@ class Delegate extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'uuid', 'name', 'email', 'password',
+        'uuid', 'name', 'email', 'channel', 'password',
     ];
 
     /**

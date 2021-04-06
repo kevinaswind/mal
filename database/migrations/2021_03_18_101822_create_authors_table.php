@@ -17,7 +17,7 @@ class CreateAuthorsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('paper_id');
             $table->uuid('uuid');
-            $table->unsignedTinyInteger('seq');
+            $table->unsignedTinyInteger('seq')->nullable();
             $table->string('name');
             $table->string('affiliation_no');
             $table->boolean('is_presenter')->default(false);
