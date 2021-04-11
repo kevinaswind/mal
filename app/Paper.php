@@ -42,4 +42,13 @@ class Paper extends Model
     {
         return $this->hasMany(Author::class);
     }
+
+    public function status()
+    {
+        if($this->complete){
+            return 'Complete';
+        }
+
+        return 'Incomplete';
+    }
 }

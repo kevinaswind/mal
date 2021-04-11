@@ -3,9 +3,18 @@
 
     <form wire:submit.prevent="submit" class="w-60 pr-3 pt-4">
         <div id="indicator" class="d-flex justify-content-around mb-4">
-            <div class="px-2 py-2 border-bottom {{ $step == 0 ? 'border-danger text-danger' : 'border-dark text-dark' }} h5">Abstract Detail</div>
-            <div class="px-2 py-2 border-bottom {{ $step == 1 ? 'border-danger text-danger' : 'border-dark text-dark' }} h5">First Author</div>
-            <div class="px-2 py-2 border-bottom {{ $step == 2 ? 'border-danger text-danger' : 'border-dark text-dark' }} h5">All Authors</div>
+            <div
+                class="px-2 py-2 border-bottom {{ $step == 0 ? 'border-danger text-danger' : 'border-dark text-dark' }} h5">
+                Abstract Detail
+            </div>
+            <div
+                class="px-2 py-2 border-bottom {{ $step == 1 ? 'border-danger text-danger' : 'border-dark text-dark' }} h5">
+                First Author
+            </div>
+            <div
+                class="px-2 py-2 border-bottom {{ $step == 2 ? 'border-danger text-danger' : 'border-dark text-dark' }} h5">
+                All Authors
+            </div>
         </div>
         <div>
             @if($step == 0)
@@ -99,7 +108,7 @@
                         <h4 class="card-title">Thank you for information</h4>
                         <p class="card-text">Welcome to webdevmatics. Happy learning and
                             Subscribe!</p>
-                        <a href="/">Go to home</a>
+                        <a href="{{ route('delegate-papers') }}">Go to home</a>
                     </div>
                 </div>
             @endif
@@ -124,7 +133,7 @@
             @endif
 
             @forelse($authors as $author)
-                {{ $author['name'] }}<sup>{{ $author['affiliation_no'] }}</sup>{{ $loop->last ? '' : ', ' }}
+                {{ $author['name'] }}<sup>{{ $author['affiliation_no']??'' }}</sup>{{ $loop->last ? '' : ', ' }}
             @empty
 
             @endforelse

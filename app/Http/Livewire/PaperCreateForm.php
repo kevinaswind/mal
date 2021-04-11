@@ -30,7 +30,7 @@ class PaperCreateForm extends Component
 
     public function mount($paperId)
     {
-        if($paperId){
+        if ($paperId) {
             $this->paper = Paper::where('uuid', '=', $paperId)->first();
 
             $this->title = $this->paper->title;
@@ -41,6 +41,10 @@ class PaperCreateForm extends Component
             $this->firstAuthorEmail = $this->paper->firstAuthor->email;
 
             $this->authors = $this->paper->authors->toArray();
+        } else {
+            $this->firstAuthorName = auth('delegate')->user()->name;
+            $this->firstAuthorEmail = auth('delegate')->user()->email;
+            $this->authors[0]['name'] = auth('delegate')->user()->name;
         }
 
         $this->step = 0;
@@ -53,11 +57,11 @@ class PaperCreateForm extends Component
 
     public function addAuthor(Author $author)
     {
-            array_push($this->authors, [
-                "name" => "",
-                "affiliation_no" => "",
-                "is_presenter" => "",
-            ]);
+        array_push($this->authors, [
+            "name" => "",
+            "affiliation_no" => "",
+            "is_presenter" => "",
+        ]);
     }
 
     public function removeAuthor($index)
@@ -81,12 +85,12 @@ class PaperCreateForm extends Component
         ]);
 
         if ($this->paper) {
-            $this->paper= tap($this->paper)->update([
+            $this->paper = tap($this->paper)->update([
                 'title' => $this->title,
                 'topic' => $this->topic,
                 'body' => $this->body,
             ]);
-        }else {
+        } else {
             $this->paper = auth('delegate')->user()->papers()->create([
                 'title' => $this->title,
                 'topic' => $this->topic,
@@ -106,12 +110,12 @@ class PaperCreateForm extends Component
         ]);
 
         if ($this->paper->firstAuthor) {
-            $this->paper->firstAuthorr= tap($this->paper->firstAuthor)->update([
+            $this->paper->firstAuthorr = tap($this->paper->firstAuthor)->update([
                 'name' => $this->firstAuthorName,
                 'institution' => $this->firstAuthorInstitution,
                 'email' => $this->firstAuthorEmail,
             ]);
-        }else {
+        } else {
             $this->paper->firstAuthor()->create([
                 'name' => $this->firstAuthorName,
                 'institution' => $this->firstAuthorInstitution,

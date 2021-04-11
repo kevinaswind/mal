@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Delegate') }} :: {{ __('Dashboard') }}</div>
+                    <div class="card-header">{{ __('View Abstracts') }}</div>
 
                     <div class="card-body pt-5">
                         @if (session('status'))
@@ -24,7 +24,8 @@
                                 <td>{{ __('Title') }}</td>
                                 <td>{{ __('Author') }}</td>
                                 <td>{{ __('Date of submission') }}</td>
-                                <td></td>
+                                <td>{{ __('Latest Update') }}</td>
+                                <td>{{ __('Status') }}</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -34,7 +35,8 @@
                                     <td><a href="{{ route('delegate-paper', $paper->uuid) }}">{{ $paper->title }}</a></td>
                                     <td>{{ $paper->firstAuthor->name }}</td>
                                     <td>{{ $paper->created_at }}</td>
-                                    <td></td>
+                                    <td>{{ $paper->updated_at }}</td>
+                                    <td>{{ $paper->status() }}</td>
                                 </tr>
                             @empty
                             <tr>

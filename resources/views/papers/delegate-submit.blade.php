@@ -5,7 +5,11 @@
         <div class="row justify-content-center">
             <div class="col-md-12 d-flex flex-column flex-grow-1">
                 <div class="card">
-                    <div class="card-header">{{ __('Delegate') }} :: {{ __('Dashboard') }}</div>
+                    @if(Route::currentRouteName() == 'delegate-paper')
+                        <div class="card-header">{{ __('Edit abstract') }}</div>
+                    @else
+                        <div class="card-header">{{ __('Submit new abstract') }}</div>
+                    @endif
 
                     <div class="card-body py-0 pr-0">
                         @if (session('status'))
