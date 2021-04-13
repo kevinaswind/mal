@@ -4,8 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Author;
 use App\Paper;
-use Barryvdh\Debugbar\LaravelDebugbar;
-use DebugBar\DebugBar;
+use Barryvdh\Debugbar\Facade as Debugbar;
 use Livewire\Component;
 
 class PaperCreateForm extends Component
@@ -140,12 +139,14 @@ class PaperCreateForm extends Component
         $result = $this->paper->authors()->createMany($this->authors);
         Debugbar::info($result);
         if(sizeof($result) > 0){
+            Debugbar::info('complete');
             $this->paper->update([
-                'complete' => 1,
+                'complete' => true,
             ]);
         }else{
+            Debugbar::info('incomplete');
             $this->paper->update([
-                'complete' => 0,
+                'complete' => false,
             ]);
         }
 
