@@ -29,10 +29,10 @@ class PaperCreateForm extends Component
         'submit3',
     ];
 
-    public function mount($paperId)
+    public function mount($paper)
     {
-        if ($paperId) {
-            $this->paper = Paper::where('uuid', '=', $paperId)->first();
+        if ($paper) {
+            $this->paper = $paper;
 
             $this->title = $this->paper->title;
             $this->topic = $this->paper->topic;

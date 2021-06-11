@@ -34,11 +34,67 @@
                     @error('topic')<small class="form-text text-danger">{{ __($message) }}</small>@enderror
                 </div>
                 <div class="form-group">
-                    <label for="body">{{ __('Body') }}</label>
-                    <input id="body" type="text" class="form-control" wire:model.lazy="body" wire:key="body"
-                           placeholder="{{ __('Body') }}">
-
-                    @error('body')<small class="form-text text-danger">{{ __($message) }}</small>@enderror
+                    <label for="body" class="col-form-label text-md-right">
+                        Abstract Body
+                    </label>
+                    <div id="counter"></div>
+                    <div wire:ignore>
+                    <textarea id="body"
+                              wire:model="body"
+                              wire:key="ckeditor-1"
+                              x-ref="ckeditor"
+                              x-data
+                              x-init="
+                              ClassicEditor.create($refs.ckeditor,
+                              {
+                                toolbar: {
+                                    items: [
+                                        'undo',
+                                        'redo',
+                                        '|',
+                                        'bold',
+                                        'italic',
+                                        'bulletedList',
+                                        'numberedList',
+                                        '|',
+                                        'outdent',
+                                        'indent',
+                                        '|',
+                                        'insertTable',
+                                        '|',
+                                        'subscript',
+                                        'superscript',
+                                        'specialCharacters',
+                                        'alignment',
+                                    ]
+                                },
+                                language: 'en',
+                                image: {
+                                    toolbar: [
+                                        'imageTextAlternative',
+                                        'imageStyle:full',
+                                        'imageStyle:side'
+                                    ]
+                                },
+                                licenseKey: '',
+                                wordCount: {
+                                    container: document.getElementById( 'word-count' ),
+                                    displayCharacters: false
+                                }
+                            })
+                            .then( editor => {
+                                editor.model.document.on('change:data', () => {
+                                   $dispatch('input', editor.getData())
+                                })
+                            })
+                            .catch( error => {
+                                console.error( error );
+                            } );">{!! $body !!}</textarea>
+                    </div>
+                    <span id="word-count"></span>
+                    @error('body')
+                    <span style="font-size: 11px; color: #e3342f">{{ $message }}</span>
+                    @enderror
                 </div>
             @endif
 
@@ -141,7 +197,7 @@
                 <h6 class="mt-3 font-weight-bold">
                     Abstract
                 </h6>
-                <p>{{ $body }}</p>
+                <p>{!! $body !!}</p>
             @endif
         </div>
         @if($topic)
@@ -155,3 +211,6 @@
         @endif
     </div>
 </div>
+
+
+

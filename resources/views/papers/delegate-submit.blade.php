@@ -18,10 +18,15 @@
                             </div>
                         @endif
 
-                        @livewire('paper-create-form', ['paperId' => $paperId ?? null])
+                        @livewire('paper-create-form', ['paper' => $paper ?? null])
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="{{ asset('js/ckeditor.js') }}"></script>
+@endpush
