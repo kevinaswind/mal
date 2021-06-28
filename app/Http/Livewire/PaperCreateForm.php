@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Author;
 use App\Paper;
+use App\Rules\MaxWordsRule;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Livewire\Component;
 
@@ -82,7 +83,7 @@ class PaperCreateForm extends Component
         $this->validate([
             'title' => 'required|min:4|max:255',
             'topic' => 'required|min:4|max:255',
-            'body' => 'required|min:4|max:500',
+            'body' => ['required', new MaxWordsRule(300)],
         ]);
 
         if ($this->paper) {

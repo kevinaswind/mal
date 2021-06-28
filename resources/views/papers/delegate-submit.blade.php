@@ -1,5 +1,13 @@
 @extends('delegate.layouts.app')
 
+@push('styles')
+    <style>
+        .ck-editor__editable_inline {
+            min-height: 400px;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">

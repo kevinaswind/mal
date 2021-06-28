@@ -57,15 +57,13 @@
                                         'bulletedList',
                                         'numberedList',
                                         '|',
+                                        'alignment',
                                         'outdent',
                                         'indent',
                                         '|',
-                                        'insertTable',
-                                        '|',
                                         'subscript',
                                         'superscript',
-                                        'specialCharacters',
-                                        'alignment',
+                                        'specialCharacters'
                                     ]
                                 },
                                 language: 'en',
@@ -91,7 +89,7 @@
                                 console.error( error );
                             } );">{!! $body !!}</textarea>
                     </div>
-                    <span id="word-count"></span>
+                    <span id="word-count" wire:ignore></span>
                     @error('body')
                     <span style="font-size: 11px; color: #e3342f">{{ $message }}</span>
                     @enderror
@@ -183,13 +181,15 @@
     </form>
     <div class="w-40 bg-dark px-4 py-4 min-vh-100 text-white">
         <h3 class="text-center mb-4 pb-3 border-bottom border-light text-warning">Abstract Preview</h3>
-        <div class="h-75">
+        <div @if(!$body)class="h-75"@endif>
             @if($title)
                 <h4>{{ $title }}</h4>
             @endif
 
             @forelse($authors as $author)
-                {{ $author['name'] }}<sup>{{ $author['affiliation_no']??'' }}</sup>{{ $loop->last ? '' : ', ' }}
+                    <span @if($author['is_presenter']==1)style="border-bottom: 1px solid #fff"@endif>
+                {{ $author['name'] }}</span><sup>{{ $author['affiliation_no']??'' }}</sup>{{ $loop->last ? '' : ', ' }}
+
             @empty
 
             @endforelse
