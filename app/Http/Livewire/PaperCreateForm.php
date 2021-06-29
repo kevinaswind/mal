@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Affiliation;
 use App\Author;
 use App\Paper;
 use App\Rules\MaxWordsRule;
@@ -18,6 +19,7 @@ class PaperCreateForm extends Component
     public $firstAuthorInstitution;
     public $firstAuthorEmail;
 
+    public $affiliations = [];
     public $authors = [];
 
     public $step;
@@ -28,6 +30,7 @@ class PaperCreateForm extends Component
         'submit1',
         'submit2',
         'submit3',
+        'submit4',
     ];
 
     public function mount($paper)
@@ -42,7 +45,7 @@ class PaperCreateForm extends Component
             $this->firstAuthorInstitution = $this->paper->firstAuthor->institution;
             $this->firstAuthorEmail = $this->paper->firstAuthor->email;
 
-            $this->authors = $this->paper->authors->toArray();
+            $this->affiliations = optional($this->paper->Affiliations)->toArray();
         } else {
             $this->firstAuthorName = auth('delegate')->user()->name;
             $this->firstAuthorEmail = auth('delegate')->user()->email;
@@ -55,6 +58,19 @@ class PaperCreateForm extends Component
     public function decreaseStep()
     {
         $this->step--;
+    }
+
+    public function addAffiliation(Affiliation $affiliation)
+    {
+        array_push($this->affiliations, [
+            "name" => "",
+            "seq" => "",
+        ]);
+    }
+
+    public function removeAffiliation($index)
+    {
+        unset($this->affiliations[$index]);
     }
 
     public function addAuthor(Author $author)
@@ -131,6 +147,27 @@ class PaperCreateForm extends Component
     public function submit3()
     {
         $this->validate([
+            'affiliations.*.name' => 'required',
+//            'affiliations.*.seq' => 'required',
+        ]);
+
+        $this->paper->affiliations()->delete();
+
+        $seq = 1;
+
+        foreach($this->affiliations as $key => $affiliation){
+            $this->affiliations[$key]['seq'] = $seq;
+            $seq++;
+        }
+
+        $result = $this->paper->affiliations()->createMany($this->affiliations);
+
+        $this->step++;
+    }
+
+    public function submit4()
+    {
+        $this->validate([
             'authors.*.name' => 'required',
             'authors.*.affiliation_no' => 'required',
             'authors.*.is_presenter' => 'required',
@@ -139,12 +176,12 @@ class PaperCreateForm extends Component
         $this->paper->authors()->delete();
         $result = $this->paper->authors()->createMany($this->authors);
         Debugbar::info($result);
-        if(sizeof($result) > 0){
+        if (sizeof($result) > 0) {
             Debugbar::info('complete');
             $this->paper->update([
                 'complete' => true,
             ]);
-        }else{
+        } else {
             Debugbar::info('incomplete');
             $this->paper->update([
                 'complete' => false,
