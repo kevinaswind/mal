@@ -43,6 +43,11 @@ class Paper extends Model
         return $this->hasMany(Affiliation::class);
     }
 
+    public function authors()
+    {
+        return $this->hasMany(Author::class);
+    }
+
     public function status()
     {
         if($this->complete){

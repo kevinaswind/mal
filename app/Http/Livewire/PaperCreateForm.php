@@ -22,6 +22,9 @@ class PaperCreateForm extends Component
     public $affiliations = [];
     public $authors = [];
 
+    public $isPresenter = 0;
+    public $isContact = 0;
+
     public $step;
 
     public $paper;
@@ -77,8 +80,9 @@ class PaperCreateForm extends Component
     {
         array_push($this->authors, [
             "name" => "",
-            "affiliation_no" => "",
-            "is_presenter" => "",
+            "affiliation_no" => [],
+            "is_presenter" => 0,
+            "is_contact" => 0,
         ]);
     }
 
@@ -162,15 +166,40 @@ class PaperCreateForm extends Component
 
         $result = $this->paper->affiliations()->createMany($this->affiliations);
 
+        $this->affiliations = optional($this->paper->Affiliations)->toArray();
+
         $this->step++;
+    }
+
+    public function setPresenter($index)
+    {
+        foreach ($this->authors as &$author)
+        {
+            $author['is_presenter'] = 0;
+        }
+
+        $this->authors[$index]['is_presenter'] = 1;
+
+    }
+
+    public function setContact($index)
+    {
+        foreach ($this->authors as &$author)
+        {
+            $author['is_contact'] = 0;
+        }
+
+        $this->authors[$index]['is_contact'] = 1;
     }
 
     public function submit4()
     {
+
         $this->validate([
             'authors.*.name' => 'required',
             'authors.*.affiliation_no' => 'required',
             'authors.*.is_presenter' => 'required',
+            'authors.*.is_contact' => 'required',
         ]);
 
         $this->paper->authors()->delete();
