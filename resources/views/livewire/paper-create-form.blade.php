@@ -90,7 +90,7 @@
                             })
                             .catch( error => {
                                 console.error( error );
-                            } );">{!! $body !!}</textarea>
+                            } )">{!! $body !!}</textarea>
                         </div>
                         <span id="word-count" wire:ignore></span>
                         @error('body')
@@ -161,9 +161,29 @@
                                             @error("authors.$index.name")<small
                                                 class="form-text text-danger">{{ $message }}</small>@enderror
                                         </div>
+                                        <div class="form-group w-50">
+                                            {{--                                            <select class="form-control" multiple--}}
+                                            {{--                                                    wire:model="authors.{{ $index }}.affiliation_no"--}}
+                                            {{--                                            >--}}
+                                            {{--                                                <option value="">Please select</option>--}}
+                                            {{--                                                @forelse($affiliations as $affiliation)--}}
+                                            {{--                                                    <option--}}
+                                            {{--                                                        value="{{ $affiliation['seq'] }}">{{ $affiliation['name'] }}</option>--}}
+                                            {{--                                                @empty--}}
+                                            {{--                                                    No affiliation--}}
+                                            {{--                                                @endforelse--}}
+                                            {{--                                            </select>--}}
+                                            <input type="text" class="form-control" wire:model="authors.{{ $index }}.affiliation_no" placeholder="Author{{ $loop->index+1 }} affiliations, seperated by comma">
+
+                                            @error("authors.$index.affiliation_no")<small class="form-text text-danger">{{ $message }}</small>@enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 d-flex">
                                         <div class="form-group w-25">
                                             <div class="d-flex align-items-center">
-                                                <input type="radio" class="form-control" name="isPresenter"
+                                                <input type="radio" class="form-control" name="isPresenter" checked
                                                        wire:model="isPresenter" value="{{ $index }}" wire:click="setPresenter({{$index}})">presenter?
                                             </div>
 
@@ -171,31 +191,24 @@
                                         </div>
                                         <div class="form-group w-25">
                                             <div class="d-flex align-items-center">
-                                            <input type="radio" class="form-control" name="isContact"
-                                                   wire:model="isContact" value="{{ $index }}" wire:click="setContact({{ $index }})">contact?
+                                                <input type="radio" class="form-control" name="isContact" checked
+                                                       wire:model="isContact" value="{{ $index }}" wire:click="setContact({{ $index }})">contact?
                                             </div>
 
                                             @error('color')<small class="form-text text-danger">{{ $message }}</small>@enderror
                                         </div>
+
+                                        @if($author['is_contact'] == 1)
+                                            <div class="form-group w-50">
+                                                <input type="text" class="form-control" wire:model="authors.{{ $index }}.contact_email" placeholder="Contact author's email">
+
+                                                @error("authors.$index.affiliation_no")<small class="form-text text-danger">{{ $message }}</small>@enderror
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
-                                <div class="row d-flex">
-                                    <div class="col-12">
-                                        <div class="form-group w-100">
-                                            <select class="form-control" multiple
-                                                    wire:model="authors.{{ $index }}.affiliation_no"
-                                                    placeholder="Author{{ $loop->index+1 }} Affiliations">
-                                                <option value="">Please select</option>
-                                                @forelse($affiliations as $affiliation)
-                                                    <option
-                                                        value="{{ $affiliation['id'] }}">{{ $affiliation['name'] }}</option>
-                                                @empty
-                                                    No affiliation
-                                                @endforelse
-                                            </select>
-
-                                            @error("authors.$index.affiliation_no")<small class="form-text text-danger">{{ $message }}</small>@enderror
-                                        </div>
+                                <div class="row">
+                                    <div class="col-12 d-flex">
                                         <div class="form-group">
                                             <input type="button" class="btn btn-danger" value="Delete"
                                                    wire:click="removeAuthor({{ $index }})">
@@ -241,18 +254,11 @@
                                     <span @if($author['is_presenter']==1)style="border-bottom: 1px solid #fff"@endif>
                     {{ $author['name'] }}</span>
                         <sup>
-{{--                            {{ implode(',',$author['affiliation_no']) }}--}}
-                            @forelse($author['affiliation_no'] as $key=>$value)
-                                @php
-                                dd($value);
-                                $affi = \App\Affiliation::find((int)$value);
-                                dd($affi);
-                                echo $affi->seq
-                                @endphp
-                                @empty
-                            @endforelse
-                            @if($author['is_contact']==1)*@endif
+                            {{ $author['affiliation_no'] }}
                         </sup>
+                        @if($author['is_contact'] == 1)
+                                *
+                            @endif
                         {{ $loop->last ? '' : ', ' }}
                     @empty
                     @endforelse
@@ -264,7 +270,13 @@
                         @empty
                         @endforelse
                     </ol>
-
+                    @foreach($authors as $author)
+                        @if($author['is_contact'] == 1)
+                    <p>
+                        *{{ $author['contact_email'] }}
+                    </p>
+                        @endif
+                    @endforeach
                     @if($body)
                         <h6 class="mt-3 font-weight-bold">
                             Abstract

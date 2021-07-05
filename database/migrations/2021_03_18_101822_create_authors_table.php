@@ -21,6 +21,8 @@ class CreateAuthorsTable extends Migration
             $table->string('name');
             $table->string('affiliation_no');
             $table->boolean('is_presenter')->default(false);
+            $table->boolean('is_contact')->default(false);
+            $table->string('contact_email');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -31,10 +31,5 @@ class Author extends Model
         return 'uuid';
     }
 
-    protected $fillable = ['paper_id', 'uuid', 'seq', 'name', 'affiliation_no', 'is_presenter'];
-
-    public function affiliations()
-    {
-        return $this->belongsToMany(Affiliation::class);
-    }
+    protected $fillable = ['paper_id', 'uuid', 'seq', 'name', 'affiliation_no', 'is_presenter', 'is_contact', 'contact_email'];
 }

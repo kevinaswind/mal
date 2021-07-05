@@ -32,9 +32,4 @@ class Affiliation extends Model
     }
 
     protected $fillable = ['paper_id', 'uuid', 'seq', 'name'];
-
-    public function authors()
-    {
-        return $this->belongsToMany(Author::class);
-    }
 }
