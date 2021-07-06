@@ -40,7 +40,7 @@
                                 </tr>
                             @empty
                             <tr>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <h5 class="text-center py-1 mb-0">{{ __('No abstracts submitted') }}</h5>
                                 </td>
                             </tr>
