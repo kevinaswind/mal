@@ -97,6 +97,13 @@
                         <span style="font-size: 11px; color: #e3342f">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="keywords">{{ __('Keywords (separated by comma)') }}</label>
+                        <input id="keywords" type="text" class="form-control" wire:model.lazy="keywords" wire:key="keywords"
+                               placeholder="{{ __('Keywords') }}">
+
+                        @error('keywords')<small class="form-text text-danger">{{ __($message) }}</small>@enderror
+                    </div>
                 @endif
 
                 @if($step ==1)
@@ -139,9 +146,23 @@
                                 <div class="form-group">
                                     <input type="button" class="btn btn-danger" value="Delete"
                                            wire:click="removeAffiliation({{ $index }})">
+                                    <input type="button" class="btn btn-danger" value="Up"
+                                           wire:click="up('affiliations',{{ $index }})">
+
+                                    <input type="button" class="btn btn-danger" value="Down"
+                                           wire:click="down('affiliations',{{ $index }})">
                                 </div>
                             </div>
                         @endforeach
+                    </div>
+                    <div class="mt-4"
+                         x-data="{show:false}"
+                         x-init="
+                         @this.on('affiliation_changed', () => {
+                            show = true;
+                            })"
+                         x-show.transition.in.duration.1000ms="show">
+                        <h5>Affiliations are changed. Please check the affiliation number of each author on the next page.</h5>
                     </div>
                 @endif
 
@@ -212,6 +233,12 @@
                                         <div class="form-group">
                                             <input type="button" class="btn btn-danger" value="Delete"
                                                    wire:click="removeAuthor({{ $index }})">
+
+                                            <input type="button" class="btn btn-danger" value="Up"
+                                                   wire:click="up('authors',{{ $index }})">
+
+                                            <input type="button" class="btn btn-danger" value="Down"
+                                                   wire:click="down('authors',{{ $index }})">
                                         </div>
                                     </div>
                                 </div>
@@ -273,7 +300,7 @@
                     @foreach($authors as $author)
                         @if($author['is_contact'] == 1)
                     <p>
-                        *{{ $author['contact_email'] }}
+                        * {{ $author['contact_email'] }}
                     </p>
                         @endif
                     @endforeach
@@ -282,6 +309,7 @@
                             Abstract
                         </h6>
                         <p>{!! $body !!}</p>
+                        <p>Keywords: {{ $keywords }}</p>
                     @endif
             </div>
             @if($topic)

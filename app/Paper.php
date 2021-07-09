@@ -31,7 +31,7 @@ class Paper extends Model
         return 'uuid';
     }
 
-    protected $fillable = ['title', 'topic', 'body', 'complete'];
+    protected $fillable = ['title', 'topic', 'body', 'keywords', 'complete'];
 
     public function firstAuthor()
     {
