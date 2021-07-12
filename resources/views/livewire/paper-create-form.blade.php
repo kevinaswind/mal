@@ -146,10 +146,10 @@
                                 <div class="form-group">
                                     <input type="button" class="btn btn-danger" value="Delete"
                                            wire:click="removeAffiliation({{ $index }})">
-                                    <input type="button" class="btn btn-danger" value="Up"
+                                    <input type="button" class="btn btn-info" value="Up"
                                            wire:click="up('affiliations',{{ $index }})">
 
-                                    <input type="button" class="btn btn-danger" value="Down"
+                                    <input type="button" class="btn btn-warning" value="Down"
                                            wire:click="down('affiliations',{{ $index }})">
                                 </div>
                             </div>
@@ -208,22 +208,20 @@
                                                        wire:model="isPresenter" value="{{ $index }}" wire:click="setPresenter({{$index}})">presenter?
                                             </div>
 
-                                            @error('color')<small class="form-text text-danger">{{ $message }}</small>@enderror
+
                                         </div>
                                         <div class="form-group w-25">
                                             <div class="d-flex align-items-center">
                                                 <input type="radio" class="form-control" name="isContact" checked
                                                        wire:model="isContact" value="{{ $index }}" wire:click="setContact({{ $index }})">contact?
                                             </div>
-
-                                            @error('color')<small class="form-text text-danger">{{ $message }}</small>@enderror
                                         </div>
 
                                         @if($author['is_contact'] == 1)
                                             <div class="form-group w-50">
                                                 <input type="text" class="form-control" wire:model="authors.{{ $index }}.contact_email" placeholder="Contact author's email">
 
-                                                @error("authors.$index.affiliation_no")<small class="form-text text-danger">{{ $message }}</small>@enderror
+                                                @error("authors.$index.contact_email")<small class="form-text text-danger">{{ $message }}</small>@enderror
                                             </div>
                                         @endif
                                     </div>
@@ -234,10 +232,10 @@
                                             <input type="button" class="btn btn-danger" value="Delete"
                                                    wire:click="removeAuthor({{ $index }})">
 
-                                            <input type="button" class="btn btn-danger" value="Up"
+                                            <input type="button" class="btn btn-info" value="Up"
                                                    wire:click="up('authors',{{ $index }})">
 
-                                            <input type="button" class="btn btn-danger" value="Down"
+                                            <input type="button" class="btn btn-warning" value="Down"
                                                    wire:click="down('authors',{{ $index }})">
                                         </div>
                                     </div>
@@ -260,6 +258,8 @@
             </div>
 
             <div class="mt-2">
+                @error('isPresenter')<small class="form-text text-danger">{{ $message }}</small>@enderror
+                @error('isContact')<small class="form-text text-danger">{{ $message }}</small>@enderror
                 @if($step> 0 && $step<=3)
                     <button type="button" wire:click="decreaseStep" wire:key="back"
                             class="btn btn-secondary mr-3">{{ __('Back') }}</button>
@@ -284,7 +284,7 @@
                             {{ $author['affiliation_no'] }}
                         </sup>
                         @if($author['is_contact'] == 1)
-                                *
+                                <sup>*</sup>
                             @endif
                         {{ $loop->last ? '' : ', ' }}
                     @empty

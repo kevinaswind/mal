@@ -7,6 +7,7 @@ use App\Author;
 use App\Paper;
 use App\Rules\MaxWordsRule;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class PaperCreateForm extends Component
@@ -23,8 +24,8 @@ class PaperCreateForm extends Component
     public $affiliations = [];
     public $authors = [];
 
-    public $isPresenter = 0;
-    public $isContact = 0;
+    public $isPresenter = null;
+    public $isContact = null;
     public $contactEmail = "";
 
     public $step;
@@ -58,11 +59,14 @@ class PaperCreateForm extends Component
         } else {
             $this->firstAuthorName = auth('delegate')->user()->name;
             $this->firstAuthorEmail = auth('delegate')->user()->email;
-            $this->authors[0]['name'] = auth('delegate')->user()->name;
-            $this->authors[0]['affiliation_no'] = "";
-            $this->authors[0]['is_presenter'] = 0;
-            $this->authors[0]['is_contact'] = 0;
-            $this->authors[0]['contact_email'] = "";
+
+            array_push($this->authors, [
+                "name" => auth('delegate')->user()->name,
+                "affiliation_no" => "",
+                "is_presenter" => null,
+                "is_contact" => null,
+                "contact_email" => "",
+            ]);
         }
 
         $this->step = 0;
@@ -180,7 +184,8 @@ class PaperCreateForm extends Component
 
     public function removeAffiliation($index)
     {
-        unset($this->affiliations[$index]);
+//        unset($this->affiliations[$index]);
+        array_splice($this->affiliations,$index,1);
     }
 
     public function submit3()
@@ -216,7 +221,8 @@ class PaperCreateForm extends Component
 
     public function removeAuthor($index)
     {
-        unset($this->authors[$index]);
+//        unset($this->authors[$index]);
+        array_splice($this->authors,$index,1);
     }
 
     public function setPresenter($index)
@@ -261,6 +267,14 @@ class PaperCreateForm extends Component
             'authors.*.affiliation_no' => 'required',
             'authors.*.is_presenter' => 'required',
             'authors.*.is_contact' => 'required',
+            'authors.*.contact_email' => "required_if:authors.*.is_contact,1",
+            'isPresenter' => 'required',
+            'isContact' => 'required'
+        ],
+        [
+            'isPresenter.required' => 'Please indicate a presenter',
+            'isContact.required' => 'Please indicate a contact',
+            'authors.*.contact_email.required_if' => 'Please enter email of contact author',
         ]);
 
 //        foreach ($this->authors as &$author)
