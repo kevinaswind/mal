@@ -46,7 +46,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function()
 //            $paper = \App\Paper::find(request()->paperId);
             $paperId = request()->paperId;
             $paper = \App\Paper::where('uuid', '=', $paperId)->first();
-            return view('papers.delegate-submit', compact('paper'));
+
+                return view('papers.delegate-submit', compact('paper'));
         })->name('delegate-paper');
     });
 

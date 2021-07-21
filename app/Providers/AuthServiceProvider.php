@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Paper;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -13,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+         Paper::class => 'App\Policies\PaperPolicy',
     ];
 
     /**
@@ -24,6 +25,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Gate::define('update-paper', function ($delegate, $paper){
+            return $delegate->id === $paper->delegate_id;
+        });
 
         //
     }
