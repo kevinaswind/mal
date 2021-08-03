@@ -24,7 +24,7 @@
                             {{ __('Registration') }}
                         </div>
                         <div class="w-25 px-2 py-4 border-light rounded-lg bg-info text-center text-white">
-                            {{ __('Payment') }}
+                            <a href="{{ route('delegate-pay-1') }}">{{ __('Payment') }}</a>
                         </div>
                     </div>
                 </div>
